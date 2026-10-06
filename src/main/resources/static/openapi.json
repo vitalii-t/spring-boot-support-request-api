@@ -1,0 +1,70 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Support Request API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/requests": {
+      "post": {
+        "summary": "Save a request and attempt one receipt",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "email",
+                  "subject",
+                  "message"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 254
+                  },
+                  "subject": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 150
+                  },
+                  "message": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 2000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved; email_status is pending, failed, unknown, previewed, or accepted"
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "403": {
+            "description": "Origin rejected"
+          },
+          "413": {
+            "description": "Body exceeds 16 KiB"
+          },
+          "429": {
+            "description": "Hourly submission limit"
+          }
+        }
+      }
+    }
+  }
+}
